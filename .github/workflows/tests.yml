@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  test:
+    name: Lint and test on ${{ matrix.os }} with Node.js ${{ matrix.node-version }} 
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        node-version: [18, 20]
+    steps:
+      - name: Normalise line-ending handling in Git
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+        if: runner.os == 'Windows'
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g npm@10.2.2
+      - run: npm ci
+      - run: npm run lint
+      - run: npm start
