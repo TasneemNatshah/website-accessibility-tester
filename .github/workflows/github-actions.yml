@@ -12,7 +12,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node-version: [18, 20]
+        node-version: [20]
     steps:
       - name: Normalise line-ending handling in Git
         shell: bash
@@ -24,4 +24,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
-      - run: yarn start
+      - run: pa11y https://pa11y.org
